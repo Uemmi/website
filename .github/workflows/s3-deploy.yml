@@ -7,6 +7,10 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -15,7 +19,7 @@ jobs:
         uses: aws-actions/configure-aws-credentials@v3
         with:
           role-to-assume: arn:aws:iam::211125564890:role/github-website
-          aws-region: us-east-1
+          aws-region: eu-central-1
 
       - name: Sync files to S3
         run: |
