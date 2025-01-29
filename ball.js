@@ -20,30 +20,37 @@ window.addEventListener("resize", () => {
   camera.updateProjectionMatrix();
 });
 
-// Create a gradient texture for the ball
-function createGradientTexture() {
+// Create a gradient texture with text
+function createTexturedGradient() {
   const canvas = document.createElement("canvas");
-  canvas.width = 256;
-  canvas.height = 256;
+  canvas.width = 512;
+  canvas.height = 512;
   const ctx = canvas.getContext("2d");
 
   // Create a radial gradient for a smooth, shaded look
-  const gradient = ctx.createRadialGradient(128, 128, 0, 128, 128, 128);
+  const gradient = ctx.createRadialGradient(256, 256, 0, 256, 256, 256);
   gradient.addColorStop(0, "#FF69B4"); // Hot pink
   gradient.addColorStop(1, "#FFC0CB"); // Light pink
 
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, canvas.width, canvas.height);
 
+  // Add "Coming Soon" text
+  ctx.font = "50px Arial";
+  ctx.fillStyle = "#C4F5FC";
+  ctx.textAlign = "center";
+  ctx.textBaseline = "middle";
+  ctx.fillText("Coming Soon", 256, 256);
+
   return new THREE.CanvasTexture(canvas);
 }
 
-// Create a sphere with the gradient texture
+// Create a sphere with the textured gradient
 const geometry = new THREE.SphereGeometry(1, 64, 64); // High segment count for smoothness
 const material = new THREE.MeshStandardMaterial({
-  map: createGradientTexture(), // Gradient texture
-  metalness: 0.2,               // Add subtle metallic shine
-  roughness: 0.8                // Control roughness for a matte look
+  map: createTexturedGradient(), // Texture with gradient and text
+  metalness: 0.2,
+  roughness: 0.8
 });
 const sphere = new THREE.Mesh(geometry, material);
 sphere.castShadow = true; // Enable shadow casting
